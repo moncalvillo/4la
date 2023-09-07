@@ -1,3 +1,5 @@
+import { Team } from "../core/team/team.model";
+
 export enum Suit {
   BASTOS = "Bastos",
   COPAS = "Copas",
@@ -13,7 +15,18 @@ export enum CardValue {
   REY = "Rey",
 }
 
-export interface Card {
-  suit: Suit;
-  value: CardValue;
+export type Score = {
+  A: number;
+  B: number;
+};
+
+export type Teams = {
+  A: Team;
+  B: Team;
+};
+
+export enum RoomState {
+  WAITING = "WAITING",
+  PLAYING = "PLAYING",
+  FINISHED = "FINISHED",
 }

@@ -26,9 +26,14 @@ final appRouter = GoRouter(
       builder: (context, state) => const JoinRoomScreen(),
     ),
     GoRoute(
-      path: '/create-room',
-      name: CreateRoomScreen.name,
-      builder: (context, state) => const CreateRoomScreen(),
+      path: '/waiting-room/:roomId', // <- Nota el parámetro :roomId
+      name: WaitingRoomScreen.name,
+      builder: (context, state) {
+        // Aquí capturas el valor del parámetro roomId desde el state
+        final roomId = state.pathParameters['roomId'] ?? "";
+        return WaitingRoomScreen(
+            roomId); // Asegúrate de que tu pantalla acepte un parámetro roomId
+      },
     ),
   ],
 );

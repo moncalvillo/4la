@@ -49,7 +49,7 @@ class _HomeView extends StatelessWidget {
   }
 }
 
-class _CustomListTile extends StatelessWidget {
+class _CustomListTile extends ConsumerWidget {
   const _CustomListTile({
     required this.menuItem,
   });
@@ -57,17 +57,18 @@ class _CustomListTile extends StatelessWidget {
   final MenuItem menuItem;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     final colors = Theme.of(context).colorScheme;
+    // Asegúrate de tener acceso al SocketService
 
     return ListTile(
       leading: Icon(menuItem.icon, color: colors.primary),
       trailing: Icon(Icons.arrow_forward_ios_rounded, color: colors.primary),
       title: Text(menuItem.title),
       subtitle: Text(menuItem.subTitle),
-      onTap: () {
-        context.push(menuItem.link);
-      },
+      onTap: menuItem.onTap != null
+          ? () => menuItem.onTap!(context)
+          : () => context.push(menuItem.link),
     );
   }
 }

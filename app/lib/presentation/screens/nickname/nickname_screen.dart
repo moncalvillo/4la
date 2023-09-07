@@ -1,4 +1,5 @@
 import 'package:app/presentation/providers/nickname_provider.dart';
+import 'package:app/services/socket_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -41,6 +42,17 @@ class _NicknameView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final nicknameNotifier = ref.read(nicknameProvider.notifier);
+    void onSubmitted(String? value) {
+      final nickname = nicknameController.text;
+      if (nickname.isNotEmpty) {
+        nicknameNotifier.state = nickname;
+        context.go('/');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Por favor, ingresa un nickname")),
+        );
+      }
+    }
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -61,6 +73,7 @@ class _NicknameView extends ConsumerWidget {
             ),
             const SizedBox(height: 16),
             TextField(
+              onSubmitted: onSubmitted,
               controller: nicknameController,
               autofocus: true,
               decoration: const InputDecoration(
@@ -69,19 +82,7 @@ class _NicknameView extends ConsumerWidget {
             ),
             const SizedBox(height: 16),
             ElevatedButton(
-                onPressed: () {
-                  final nickname = nicknameController.text;
-                  if (nickname.isNotEmpty) {
-                    // Guarda el nickname y/o navega a otra pantalla
-                    nicknameNotifier.state = nickname;
-                    context.go('/');
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content: Text("Por favor, ingresa un nickname")),
-                    );
-                  }
-                },
+                onPressed: () => onSubmitted(nicknameController.text),
                 child: const Text("Continuar")),
           ],
         ),

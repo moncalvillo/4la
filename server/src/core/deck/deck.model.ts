@@ -1,4 +1,4 @@
-import { Card, CardValue, Suit } from "../../shared/types";
+import { CardValue, Suit } from "../../shared/types";
 
 export class Deck {
   private cards: Card[] = [];
@@ -6,7 +6,7 @@ export class Deck {
     if (cards) {
       this.cards = cards;
     } else {
-      this.cards = this.createStandardDeckCards();
+      this.cards = this.createCuatrolaDeckCards();
     }
   }
 
@@ -14,14 +14,16 @@ export class Deck {
     return this.cards[Math.floor(Math.random() * this.cards.length)];
   }
 
-  private createStandardDeckCards(): Card[] {
+  private createCuatrolaDeckCards(): Card[] {
     const cards: Card[] = [];
     for (const suit in Suit) {
       for (const value in CardValue) {
-        cards.push({
-          suit: Suit[suit as keyof typeof Suit],
-          value: CardValue[value as keyof typeof CardValue],
-        });
+        cards.push(
+          new Card(
+            Suit[suit as keyof typeof Suit],
+            CardValue[value as keyof typeof CardValue]
+          )
+        );
       }
     }
     return cards;
@@ -41,6 +43,14 @@ export class Deck {
   }
 
   toString(): string {
-    return this.cards.map((card) => `${card.value} de ${card.suit}`).join("\n");
+    return this.cards.map((card) => card.toString()).join("\n ");
+  }
+}
+
+export class Card {
+  constructor(public palo: Suit, public valor: CardValue) {}
+
+  toString(): string {
+    return `${this.valor} de ${this.palo}`;
   }
 }
